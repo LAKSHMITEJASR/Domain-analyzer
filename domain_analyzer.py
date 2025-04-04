@@ -1374,7 +1374,7 @@ def find_and_analyze_random_domains(domain, amount):
             domain=domain[1:]
 
         # Add slashes before every dot
-        domain_re=domain.replace('.','\.')
+        domain_re=domain.replace('.','\\.')
 
 
         # Initialize random seed
@@ -1392,7 +1392,7 @@ def find_and_analyze_random_domains(domain, amount):
                 text = opener_web.open(request_web).read()
 
                 # This re extracts the domains
-                domains_web = (re.findall(bytes('(http:\/\/\w[\w\.\-]+\.'+domain_re+')', encoding='utf-8'), text))
+                domains_web = (re.findall(bytes(r'(http:\/\/\w[\w\.\-]+\.'+domain_re + r')', encoding='utf-8'), text))
 
                 if debug:
                     print(f'\tDomains: {domains_web}')
@@ -1550,7 +1550,7 @@ def check_domain_emails(domain):
                 request_groups.add_header(b'User-Agent','Mozilla/4.0 (compatible; MSIE 5.5; Windows NT 5.0)')
                 opener = request.build_opener()
                 text = opener.open(request_groups).read()
-                emails = (re.findall(bytes('([\w\.\-]+@'+domain+')', encoding='utf-8'), StripTags(text)))
+                emails = (re.findall(bytes(r'([\w\.\-]+@' + domain + ')', encoding='utf-8'), StripTags(text)))
                 for email in emails:
                     d[email]=1
                     uniq_emails = list(d.keys())
@@ -1565,7 +1565,7 @@ def check_domain_emails(domain):
                 request_web.add_header(b'User-Agent','Mozilla/4.0 (compatible;MSIE 5.5; Windows NT 5.0)')
                 opener_web = request.build_opener()
                 text = opener_web.open(request_web).read()
-                emails_web = (re.findall(bytes('([\w\.\-]+@'+domain+')', encoding='utf-8'), StripTags(text)))
+                emails_web = (re.findall(bytes(r'([\w\.\-]+@'+domain +')', encoding='utf-8'), StripTags(text)))
                 for email_web in emails_web:
                     d[email_web]=1
                     uniq_emails_web = list(d.keys())
@@ -1869,7 +1869,9 @@ def host_info(domain):
             sys.exit(1)
 
 def tt():
-    print("               !         !              \n              ! !       ! !              \n             ! . !     ! . !              \n                ^^^^^^^^^ ^                \n              ^             ^              \n            ^  (0)       (0)  ^           \n           ^        ""         ^           \n          ^   ***************    ^         \n        ^   *                 *   ^        \n       ^   *   /\   /\   /\    *    ^       \n      ^   *                     *    ^    \n     ^   *   /\   /\   /\   /\   *    ^    \n    ^   *                         *    ^    \n    ^  *                           *   ^    \n    ^  *                           *   ^    \n     ^ *                           *  ^     \n      ^*                           * ^     \n       ^ *                        * ^    \n       ^  *                      *  ^    \n         ^  *       ) (         * ^    \n             ^^^^^^^^ ^^^^^^^^^             \n                   Totoro              \n")
+    print(r"               !         !              \n              ! !       ! !              \n             ! . !     ! . !              \n                ^^^^^^^^^ ^                \n              ^             ^              \n            ^  (0)       (0)  ^           \n           ^        ''         ^           \n     ^   ***************    ^         \n        ^   *                 *   ^        \n       ^   *   /\   /\   /\    *    ^       \n      ^   *   *   ^    \n     ^   *   /\   /\   /\   /\   *    ^    \n    ^   *                         *    ^    \n    ^  *                           *   ^    \n    ^  *                           *   ^    \n     ^ *                           *  ^     \n      ^*                           * ^     \n       ^ *                         * ^     \n       ^  *                      *  ^    \n         ^  *       ) (         * ^    \n             ^^^^^^^^ ^^^^^^^^^             \n                   Totoro              \n")
+
+
 
 def printout(domain,ip,option):
     """
@@ -2277,7 +2279,7 @@ def find_robtex_domains():
                 try:
                     #text2=text.split('<span id="sharedns">')[1].split('</div>')[0].split(')')[1]
                     text2=text.split('id="dns1"')[1].split('<div class="div4">')[0].split(')')[1]
-                    temp_domains = re.findall(bytes('(href="\w[\w\.\-]+\.html")', encoding='utf-8'), text2)
+                    temp_domains = re.findall(bytes(r'(href="\w[\w\.\-]+\.html")', encoding='utf-8'), text2)
 
                     logging.info('\tWe found {0} more domains:'.format(len(temp_domains)))
                     if output_directory!=False:
